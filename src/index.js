@@ -1,9 +1,16 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
 import App from './components/App'
-import { login } from './sevices/dataService';
+import store from './redux/store'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import history from './router/history'
 
-login('John', 'Rm!t201278')
-  .then(data => console.log(data))
-  .catch(error => console.log(error))
-ReactDOM.render(<App/>, document.querySelector("#root"))
+window.store = store
+ReactDOM.render(
+  <Provider store={store}>
+    <Router history={history}>
+      <App/>
+    </Router>
+  </Provider>
+  , document.querySelector("#root"))
