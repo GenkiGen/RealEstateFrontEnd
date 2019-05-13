@@ -4,7 +4,7 @@ import history from '../router/history'
 
 function login(username, password) {
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/authenticate', {
+    axios.post('http://103.130.212.103:9090/authenticate', {
       name: username,
       password
     }, {
@@ -24,7 +24,7 @@ function login(username, password) {
 
 function register(username, password) {
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/users', {
+    axios.post('http://103.130.212.103:9090/users', {
       name: username,
       password
     }, {
@@ -57,7 +57,7 @@ function getAllAdvertisements(page, sort, filter) {
     order: sort.order
   } : {}
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8080/advertisements', {
+    axios.get('http://103.130.212.103:9090/advertisements', {
       params: { 
         p: page,
         ...filterObject,
@@ -72,7 +72,7 @@ function getAllAdvertisements(page, sort, filter) {
 
 function getOwnAdvertisement(page) {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8080/advertisements/me', {
+    axios.get('http://103.130.212.103:9090/advertisements/me', {
       params: { p: page },
       headers: auth.getAuthHeader()
     })
@@ -83,7 +83,7 @@ function getOwnAdvertisement(page) {
 
 function getOneAdvertisement(id) {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/advertisements/${id}`, {
+    axios.get(`http://103.130.212.103:9090/advertisements/${id}`, {
       headers: auth.getAuthHeader()
     })
     .then(resp => resolve(resp.data))
@@ -93,7 +93,7 @@ function getOneAdvertisement(id) {
 
 function deleteAd(_id) {
   return new Promise((resolve, reject) => {
-    axios.delete('http://localhost:8080/advertisements', {
+    axios.delete('http://103.130.212.103:9090/advertisements', {
       headers: auth.getAuthHeader(),
       data: {
         _id
@@ -106,7 +106,7 @@ function deleteAd(_id) {
 
 function addAdvertisement(advertisement) {
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/advertisements', advertisement, {
+    axios.post('http://103.130.212.103:9090/advertisements', advertisement, {
       headers: {
         'Content-Type': 'application/json',
         ...auth.getAuthHeader()
@@ -119,7 +119,7 @@ function addAdvertisement(advertisement) {
 
 function updateAdvertisement(advertisement) {
   return new Promise((resolve, reject) => {
-    axios.put('http://localhost:8080/advertisements', advertisement, {
+    axios.put('http://103.130.212.103:9090/advertisements', advertisement, {
       headers: {
         'Content-Type': 'application/json',
         ...auth.getAuthHeader()
@@ -133,7 +133,7 @@ function updateAdvertisement(advertisement) {
 //User
 function getUserInfo() {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8080/users/me', {
+    axios.get('http://103.130.212.103:9090/users/me', {
       headers: auth.getAuthHeader()
     })
     .then(resp => { 
@@ -151,7 +151,7 @@ function logout() {
 //Projects
 function addProject(project) {
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/projects', project, {
+    axios.post('http://103.130.212.103:9090/projects', project, {
     headers: {
       "Content-Type": "application/json",
       ...auth.getAuthHeader()
@@ -164,7 +164,7 @@ function addProject(project) {
 
 function fetchOwnProjects(page) {
   return new Promise((resolve, reject) => {
-    axios.get("http://localhost:8080/projects/me", {
+    axios.get("http://103.130.212.103:9090/projects/me", {
       headers: auth.getAuthHeader(),
       params: {
         page
@@ -177,7 +177,7 @@ function fetchOwnProjects(page) {
 
 function updateProject(projectId, update) {
   return new Promise((resolve, reject) => {
-    axios.put(`http://localhost:8080/projects/${projectId}`, update, {
+    axios.put(`http://103.130.212.103:9090/projects/${projectId}`, update, {
       headers: {
         'Content-Type': 'application/json',
         ...auth.getAuthHeader()
@@ -190,7 +190,7 @@ function updateProject(projectId, update) {
 
 function fetchOneProject(projectId) {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/projects/${projectId}`, {
+    axios.get(`http://103.130.212.103:9090/projects/${projectId}`, {
       headers: auth.getAuthHeader()
     })
     .then(resp => resolve(resp.data))
@@ -200,7 +200,7 @@ function fetchOneProject(projectId) {
 
 function addAdToProject(projectId, adId) {
   return new Promise((resolve, reject) => {
-    axios.post(`http://localhost:8080/projects/${projectId}/addAdvertisement`, {
+    axios.post(`http://103.130.212.103:9090/projects/${projectId}/addAdvertisement`, {
       adId
     }, 
     {
@@ -216,7 +216,7 @@ function addAdToProject(projectId, adId) {
 
 function removeAdFromProject(projectId, adId) {
   return new Promise((resolve, reject) => {
-    axios.delete(`http://localhost:8080/projects/${projectId}/removeAdvertisement`, {
+    axios.delete(`http://103.130.212.103:9090/projects/${projectId}/removeAdvertisement`, {
       headers: {
         'Content-Type': 'application/json',
         ...auth.getAuthHeader()
@@ -232,7 +232,7 @@ function removeAdFromProject(projectId, adId) {
 
 function removeProject(projectId) {
   return new Promise((resolve, reject) => {
-    axios.delete(`http://localhost:8080/projects/${projectId}`, {
+    axios.delete(`http://103.130.212.103:9090/projects/${projectId}`, {
       headers: auth.getAuthHeader()
     })
     .then(resp => resolve(resp.data))
@@ -241,6 +241,7 @@ function removeProject(projectId) {
 }
 
 function handleResponse(error, reject) {
+  console.log(error.status)
   const { status } = error.response
   if (status === 302) {
     logout()

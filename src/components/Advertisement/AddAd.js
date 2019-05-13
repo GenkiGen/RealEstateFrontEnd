@@ -28,7 +28,7 @@ class AddAd extends React.Component {
       ownerName: formData.get("ownerName"),
       ownerPhone: formData.get("ownerPhone"),
       district: formData.get("district"),
-      street: formData.get("district"),
+      street: formData.get("street"),
       city: formData.get("city"),
       expDate: formData.get("expDate"),
       userId: this.props.user.userId
