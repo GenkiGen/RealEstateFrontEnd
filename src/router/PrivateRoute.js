@@ -5,7 +5,7 @@ import React from 'react'
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={(props) => {
-      return auth.isLoggedIn() ? <Component {...props}/>: <Redirect to="/login"/>
+      return auth.isLoggedIn() ? <Component {...props}/>:<Redirect to="/login"/>
     }}/>
   )
 }

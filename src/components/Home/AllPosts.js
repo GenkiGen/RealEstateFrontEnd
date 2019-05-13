@@ -1,30 +1,47 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchAdverstisements } from '../../redux/actions'
+import { getOwnAds } from '../../redux/actions'
+import Advertisement from './APost';
+import Pagination from '../Pagination/Pagination'
+import { Link } from 'react-router-dom'
 
 class AllAdvertisements extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onPageClick = this.onPageClick.bind(this)
+  }
+
   componentDidMount() {
-    this.props.fetchAdverstisements()
+    this.props.getOwnAds()
+  }
+
+  onPageClick(page) {
+    this.props.getOwnAds(page)
   }
 
   render() {
-    const { loading, error, ads } = this.props
+    const { loading, error, ads, total, authorized=false } = this.props
     return (
-      <div className="ads">
-      <h1 className="title">All real estates</h1>
-      {
-        loading ? <h1 className="title is-5 has-text-info">Loading ads</h1> :
-          error ? <h1 className="title is-5 has-text-danger">Error encountered</h1> :
-            <React.Fragment>
-              {
-                ads.map(ad => <div className="card card-content">
+      <div className="card">
+        <div className="card-header">
+          <div className="card-header-title">
+            <h1 className="heading has-text-info is-3">Your advertisements</h1>
+          </div>
+        </div>
+
+        <div className="card-content">
+        {
+          loading ? <h1 className="title is-5 has-text-info">Loading ads</h1> :
+            error ? <h1 className="title is-5 has-text-danger">Error encountered</h1> :
+              <React.Fragment>
+                <Link to="/advertisements" className="has-text-link">View all</Link>
                 {
-                  ad.title
+                  ads.map((ad, index) => <Advertisement ad={ad} key={index} authorized={authorized}/>)
                 }
-                </div>)
-              }
-            </React.Fragment>
-      }
+              </React.Fragment>
+        }
+        </div>
+        <Pagination total={total} per_page={5} onPageClick={this.onPageClick}/>
       </div>
     )
   }
@@ -32,10 +49,11 @@ class AllAdvertisements extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.advertisements.loading,
-    error: state.advertisements.error,
-    ads: state.advertisements.ads
+    loading: state.ownAdvertisements.loading,
+    total: state.ownAdvertisements.total,
+    error: state.ownAdvertisements.error,
+    ads: state.ownAdvertisements.ads
   }
 }
 
-export default connect(mapStateToProps, { fetchAdverstisements })(AllAdvertisements)
+export default connect(mapStateToProps, { getOwnAds })(AllAdvertisements)

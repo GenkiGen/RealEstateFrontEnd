@@ -1,25 +1,50 @@
 import React from 'react'
-import { logout } from '../../redux/actions'
+import { logout, getUserInfo } from '../../redux/actions'
 import { connect } from 'react-redux'
 import AllPosts from './AllPosts';
+import AddAd from '../Advertisement/AddAd';
+import OwnProjects from '../Project/OwnProjects';
 
-const Homepage = ({ userId, logout }) => {
-  function onLogout() {
-    logout()
+class Homepage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onLogout = this.onLogout.bind(this)
   }
 
-  return (
-    <div className="container" style={{padding: "10px"}}>
-      <button className="button is-warning" onClick={onLogout}>Logout</button>
-      <AllPosts />
-    </div>
-  )
+  componentDidMount() {
+    this.props.getUserInfo()
+  }
+
+  onLogout() {
+    this.props.logout()
+  }
+
+  render() {
+    const { user, loading } = this.props
+    return (
+      loading ? <h1 className="title is-danger">Wait a minute</h1> : 
+      <div className="hero is-fullheight is-warning" style={{padding: "10px"}}>
+        <h1 className="title is-info">Welcome, {user.name}</h1>
+        <button className="button is-info" onClick={this.onLogout} style={{marginBottom: "10px"}}>Logout</button>
+        <div className="columns">
+          <div className="column is-half">
+            <AddAd />
+          </div>
+          <div className="column is-half">
+            <AllPosts authorized={true}/>
+            <OwnProjects />
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = state => {
   return {
-    userId: state.auth.userId
+    user: state.auth.user,
+    loading: state.auth.gettingInfo
   }
 }
 
-export default connect(mapStateToProps, { logout })(Homepage)
+export default connect(mapStateToProps, { logout, getUserInfo })(Homepage)

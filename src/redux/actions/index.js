@@ -7,7 +7,16 @@ import {
   SIGNUP_FAILED,
   FETCH_ADS_START,
   FETCH_ADS_FAILED,
-  FETCH_ADS_SUCCESS
+  FETCH_ADS_SUCCESS,
+  FETCH_USER_INFO,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAILED,
+  FETCH_OWN_ADS_START,
+  FETCH_OWN_ADS_FAILED,
+  FETCH_OWN_ADS_SUCCESS,
+  FETCH_ONE_ADS_START,
+  FETCH_ONE_ADS_FAILED,
+  FETCH_ONE_ADS_SUCCESS
 } from '../constants/action-types'
 import service from '../../sevices/dataService'
 import history from '../../router/history'
@@ -87,7 +96,6 @@ export function signup(username, password) {
             })
            .catch(error => {
               const { data, status } = error.response
-              console.log(data.data.error.message)
               if (status === 402) {
                 dispatch(signupFailed({ error: data.data.error.message }))
               } else {
@@ -98,11 +106,14 @@ export function signup(username, password) {
 }
 
 //Advertisement
-export function fetchAdverstisements() {
+export function fetchAdverstisements(page, sort, filter) {
   return function(dispatch) {
     dispatch(start())
-    service.getAllAdvertisements()
-         .then(data => dispatch(success({ advertisements: data.data })))
+    service.getAllAdvertisements(page, sort, filter)
+         .then(data => dispatch(success({ 
+           advertisements: data.data.advertisements,
+           total: data.data.total
+          })))
          .catch(error => dispatch(failed({ error })))
   } 
   
@@ -123,6 +134,97 @@ export function fetchAdverstisements() {
     return {
       type: FETCH_ADS_FAILED,
       payload
+    }
+  }
+}
+
+export function getOwnAds(page) {
+  return function(dispatch) {
+    dispatch(start)
+    service.getOwnAdvertisement(page)
+           .then(data => dispatch(success({ 
+             advertisements: data.data.advertisements,
+             total: data.data.total,
+            })))
+           .catch(error => dispatch(failed({ error })))
+  }
+
+  function start() {
+    return {
+      type: FETCH_OWN_ADS_START
+    }
+  }
+
+  function success(payload) {
+    return {
+      type: FETCH_OWN_ADS_SUCCESS,
+      payload
+    }
+  }
+
+  function failed(payload) {
+    return {
+      type: FETCH_OWN_ADS_FAILED,
+      payload
+    }
+  }
+}
+
+export function getOneAd(id) {
+  return function(dispatch) {
+    dispatch(start)
+    service.getOneAdvertisement(id)
+           .then(data => dispatch(success({ advertisement: data.data })))
+           .catch(error => dispatch(failed({ error })))
+  }
+
+  function start() {
+    return {
+      type: FETCH_ONE_ADS_START
+    }
+  }
+
+  function success(payload) {
+    return {
+      type: FETCH_ONE_ADS_SUCCESS,
+      payload
+    }
+  }
+
+  function failed(payload) {
+    return {
+      type: FETCH_ONE_ADS_FAILED,
+      payload
+    }
+  }
+}
+
+//User infos
+export function getUserInfo() {
+  return function(dispatch) {
+    dispatch(start())
+    service.getUserInfo()
+           .then(resp => dispatch(success({ data: resp.data })))
+           .catch(error => dispatch(failed({ error })))
+  }
+
+  function success(payload) {
+    return {
+      type: FETCH_USER_SUCCESS,
+      payload
+    }
+  }
+
+  function failed(payload) {
+    return {
+      type: FETCH_USER_FAILED,
+      payload
+    }
+  }
+
+  function start() {
+    return {
+      type: FETCH_USER_INFO
     }
   }
 }

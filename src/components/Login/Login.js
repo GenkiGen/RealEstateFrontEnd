@@ -3,7 +3,7 @@ import { login } from '../../redux/actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const Login = ({ authFailed, loggingIn, loggedIn, login }) => {
+const Login = ({ authFailed, loggingIn, login }) => {
   function onLogin(event) {
     event.preventDefault()
     const data = new FormData(event.target)
