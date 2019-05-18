@@ -22,7 +22,7 @@ class Pagination extends React.Component {
     const pages = []
     for (let i = 0; i !== totalPages; ++i) {
       pages.push(<li key={i}>
-        <p className={i === current ? "pagination-link is-current" : "pagination-link"} onClick={() => this.onPage(i)}>{i}</p>
+        <p className={i === current ? "pagination-link is-current" : "pagination-link"} onClick={() => this.onPage(i)}>{i+1}</p>
       </li>)
     }
     return pages
