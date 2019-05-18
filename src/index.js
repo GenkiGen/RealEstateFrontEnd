@@ -9,7 +9,7 @@ import history from './router/history'
 window.store = store
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history} basename={process.env.PUBLIC_URL}>
+    <Router history={history}>
       <App/>
     </Router>
   </Provider>
