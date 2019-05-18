@@ -80,7 +80,7 @@ class UpdateAdvertisement extends React.Component {
       <React.Fragment>
         <h1 className="title is-3 has-text-white">Update advertisement</h1>
         {
-          submitted ? (success ? <h1 className="title has-text-info is-3">Advertisement updated</h1> : <h1 className="heading has-text-danger is-3">Warning, {error}</h1>) : null
+          submitted ? (success ? <h1 className="title has-text-success is-3">Advertisement updated</h1> : <h1 className="heading has-text-danger is-3">Warning, {error}</h1>) : null
         }
         <form onSubmit={this.onUpdate}>
           <div className="field">
